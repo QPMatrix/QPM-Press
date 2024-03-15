@@ -12,7 +12,7 @@ const Navigation = ({ user }: Props) => {
     <div className="p-4 flex items-center justify-between relative">
       <aside className="flex items-center gap-2">
         <Image
-          src={"/assets/QPMPress-logo.svg"}
+          src={"/assets/QubeFlow-logo.svg"}
           alt="QPMPress logo"
           width={40}
           height={40}

@@ -45,7 +45,7 @@ import {
   initUser,
   saveActivityLogsNotification,
   updateAgencyDetails,
-  upsertAgency,
+  upsetAgency,
 } from "@/lib/queries";
 import { Button } from "../ui/button";
 import Loading from "../global/loading";
@@ -137,7 +137,7 @@ const AgencyDetails = ({ data }: Props) => {
       newUserData = await initUser({ role: "AGENCY_OWNER" });
       if (!data) return;
 
-      const response = await upsertAgency({
+      await upsetAgency({
         id: data?.id ? data.id : v4(),
         address: values.address,
         agencyLogo: values.agencyLogo,
@@ -157,10 +157,8 @@ const AgencyDetails = ({ data }: Props) => {
       toast({
         title: "Created Agency",
       });
-      if (data?.id) return router.refresh();
-      if (response) {
-        return router.refresh();
-      }
+
+      return router.refresh();
     } catch (error) {
       console.log(error);
       toast({

@@ -207,7 +207,7 @@ export const initUser = async (newUser: Partial<User>) => {
   return userData;
 };
 
-export const upsertAgency = async (agency: Agency, price?: Plan) => {
+export const upsetAgency = async (agency: Agency, price?: Plan) => {
   if (!agency.companyEmail) return null;
   try {
     const agencyDetails = await db.agency.upsert({
@@ -257,6 +257,22 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
       },
     });
     return agencyDetails;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getNotificationAndUser = async (agencyId: string) => {
+  try {
+    const response = await db.notification.findMany({
+      where: {
+        agencyId,
+      },
+      include: { User: true },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return response;
   } catch (error) {
     console.log(error);
   }
