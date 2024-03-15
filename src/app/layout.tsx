@@ -5,6 +5,8 @@ import "./globals.css";
 const font = DM_Sans({ subsets: ["latin"] });
 
 import { ThemeProvider } from "@/providers/theme-provider";
+import ModalProvider from "@/providers/modal-provider";
+import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "QubeFlow",
   description: "All in one agency management platform",
@@ -24,7 +26,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ModalProvider>
+            {children}
+            <Toaster />
+          </ModalProvider>
         </ThemeProvider>
       </body>
     </html>

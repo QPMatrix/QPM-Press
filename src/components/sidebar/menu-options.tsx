@@ -21,6 +21,7 @@ import {
   CommandList,
 } from "../ui/command";
 import Link from "next/link";
+import { useModal } from "@/hooks/use-modal";
 
 type Props = {
   defaultOpen?: boolean;
@@ -41,6 +42,7 @@ const MenuOptions = ({
   user,
   defaultOpen,
 }: Props) => {
+  const { setOpen } = useModal();
   const [isMounted, setIsMounted] = useState(false);
   const openState = useMemo(
     () => (defaultOpen ? { open: true } : {}),
@@ -213,7 +215,7 @@ const MenuOptions = ({
                 </CommandList>
                 {user?.role === "AGENCY_OWNER" ||
                   (user?.role === "AGENCY_ADMIN" && (
-                    <Button className="w-full flex gap-2">
+                    <Button className="w-full flex gap-2" onClick={() => {}}>
                       <PlusCircleIcon size={15} />
                       Create Sub Account
                     </Button>
