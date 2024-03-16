@@ -45,7 +45,7 @@ import {
   initUser,
   saveActivityLogsNotification,
   updateAgencyDetails,
-  upsetAgency,
+  upsertAgency,
 } from "@/lib/queries";
 import { Button } from "../ui/button";
 import Loading from "../global/loading";
@@ -137,7 +137,7 @@ const AgencyDetails = ({ data }: Props) => {
       newUserData = await initUser({ role: "AGENCY_OWNER" });
       if (!data) return;
 
-      await upsetAgency({
+      await upsertAgency({
         id: data?.id ? data.id : v4(),
         address: values.address,
         agencyLogo: values.agencyLogo,

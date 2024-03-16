@@ -28,7 +28,7 @@ import {
 import FileUpload from "../global/file-upload";
 import { Agency, SubAccount } from "@prisma/client";
 import { useToast } from "../ui/use-toast";
-import { saveActivityLogsNotification, upsetSubAccount } from "@/lib/queries";
+import { saveActivityLogsNotification, upsertSubAccount } from "@/lib/queries";
 import { useEffect } from "react";
 import Loading from "../global/loading";
 import { useModal } from "@/hooks/use-modal";
@@ -83,7 +83,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await upsetSubAccount({
+      const response = await upsertSubAccount({
         id: details?.id ? details.id : v4(),
         address: values.address,
         subAccountLogo: values.subAccountLogo,

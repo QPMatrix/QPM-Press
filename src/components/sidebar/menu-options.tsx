@@ -62,13 +62,13 @@ const MenuOptions = ({
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return;
+  if (!isMounted) return null;
 
   return (
     <Sheet modal={false} {...openState}>
       <SheetTrigger
         asChild
-        className="absolute left-4 top-4 z-[100] md:!hidden felx"
+        className="absolute left-4 top-4 z-[100] md:!hidden flex"
       >
         <Button variant="outline" size={"icon"}>
           <Menu />
@@ -124,7 +124,7 @@ const MenuOptions = ({
                     user?.role === "AGENCY_ADMIN") &&
                     user?.Agency && (
                       <CommandGroup heading="Agency">
-                        <CommandItem className="!bg-transparent my-2 text-primary broder-[1px] border-border p-2 rounded-md hover:!bg-muted cursor-pointer transition-all">
+                        <CommandItem className="!bg-transparent my-2 text-primary border-[1px] border-border p-2 rounded-md hover:!bg-muted cursor-pointer transition-all">
                           {defaultOpen ? (
                             <Link
                               href={`/agency/${user?.Agency?.id}`}
