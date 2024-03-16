@@ -1,5 +1,5 @@
 "use client";
-import { useModal } from "@/hooks/use-modal";
+import { useModal } from "../../hooks/use-modal";
 import React from "react";
 import {
   Dialog,
@@ -20,7 +20,7 @@ const CustomModal = ({ children, defaultOpen, subheading, title }: Props) => {
   const { isOpen, setClose } = useModal();
   return (
     <Dialog open={isOpen || defaultOpen} onOpenChange={setClose}>
-      <DialogContent className="overflow-scroll md:max-[700px] md:h-fit h-screen bg-card">
+      <DialogContent className="overflow-scroll md:max-h-[700px] md:h-fit h-screen bg-card">
         <DialogHeader className="pt-8 text-left">
           <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
           <DialogDescription>{subheading}</DialogDescription>

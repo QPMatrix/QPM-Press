@@ -1,9 +1,11 @@
 "use client";
-import { Agency, User } from "@prisma/client";
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
+import { Agency, Contact, Plan, User } from "@prisma/client";
+import { createContext, useContext, useEffect, useState } from "react";
+
 interface ModalProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
+
 export type ModalData = {
   user?: User;
   agency?: Agency;
@@ -12,29 +14,31 @@ export type ModalData = {
 type ModalContextType = {
   data: ModalData;
   isOpen: boolean;
-  setOpen: (modal: ReactNode, fetchData?: () => Promise<any>) => void;
+  setOpen: (modal: React.ReactNode, fetchData?: () => Promise<any>) => void;
   setClose: () => void;
 };
 
 export const ModalContext = createContext<ModalContextType>({
   data: {},
   isOpen: false,
-  setOpen: (modal: ReactNode, fetchData?: () => Promise<any>) => {
-    console.log(modal, fetchData);
-  },
+  setOpen: (modal: React.ReactNode, fetchData?: () => Promise<any>) => {},
   setClose: () => {},
 });
 
-const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
+const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<ModalData>({});
-  const [showingModal, setShowingModal] = useState<ReactNode>(null);
+  const [showingModal, setShowingModal] = useState<React.ReactNode>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  const setOpen = async (modal: ReactNode, fetchData?: () => Promise<any>) => {
+
+  const setOpen = async (
+    modal: React.ReactNode,
+    fetchData?: () => Promise<any>
+  ) => {
     if (modal) {
       if (fetchData) {
         setData({ ...data, ...(await fetchData()) } || {});
@@ -43,10 +47,12 @@ const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
       setIsOpen(true);
     }
   };
+
   const setClose = () => {
     setIsOpen(false);
     setData({});
   };
+
   if (!isMounted) return null;
 
   return (
@@ -56,4 +62,5 @@ const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
     </ModalContext.Provider>
   );
 };
+
 export default ModalProvider;

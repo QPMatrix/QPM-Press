@@ -108,8 +108,8 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
       });
 
       toast({
-        title: "Sub account details saved",
-        description: "Successfully saved your sub account details.",
+        title: "Subaccount details saved",
+        description: "Successfully saved your subaccount details.",
       });
 
       setClose();
@@ -130,6 +130,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
   }, [details]);
 
   const isLoading = form.formState.isSubmitting;
+  //CHALLENGE Create this form.
   return (
     <Card className="w-full">
       <CardHeader>
@@ -182,7 +183,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="companyEmail"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Account Email</FormLabel>
+                    <FormLabel>Acount Email</FormLabel>
                     <FormControl>
                       <Input placeholder="Email" {...field} />
                     </FormControl>
@@ -198,7 +199,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="companyPhone"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Account Phone Number</FormLabel>
+                    <FormLabel>Acount Phone Number</FormLabel>
                     <FormControl>
                       <Input placeholder="Phone" required {...field} />
                     </FormControl>
@@ -257,7 +258,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="zipCode"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Zipcode</FormLabel>
+                    <FormLabel>Zipcpde</FormLabel>
                     <FormControl>
                       <Input required placeholder="Zipcode" {...field} />
                     </FormControl>

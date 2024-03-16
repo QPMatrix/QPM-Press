@@ -122,16 +122,16 @@ const AgencyDetails = ({ data }: Props) => {
           },
         };
 
-        const customerResponse = await fetch("/api/stripe/create-customer", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bodyData),
-        });
-        const customerData: { customerId: string } =
-          await customerResponse.json();
-        custId = customerData.customerId;
+        // const customerResponse = await fetch("/api/stripe/create-customer", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(bodyData),
+        // });
+        // const customerData: { customerId: string } =
+        //   await customerResponse.json();
+        // custId = customerData.customerId;
       }
       //WIP custId
       newUserData = await initUser({ role: "AGENCY_OWNER" });
