@@ -7,6 +7,8 @@ import {
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";
+import BlurPage from "@/components/global/blur-page";
+import InfoBar from "@/components/global/info-bar";
 
 type Props = {
   children: React.ReactNode;
@@ -34,7 +36,12 @@ const AgencyIdLayout = async ({ children, params }: Props) => {
     return (
       <div className="h-screen overflow-hidden">
         <Sidebar id={agencyId} type="agency" />
-        <div className="md:pl-[300px]">{children}</div>
+        <div className="md:pl-[300px]">
+          <InfoBar notification={allNoti} role={allNoti.User?.role} />
+          <div className="relative">
+            <BlurPage> {children}</BlurPage>
+          </div>
+        </div>
       </div>
     );
   }
