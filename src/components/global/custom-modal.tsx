@@ -13,7 +13,7 @@ type Props = {
   title: string;
   subheading: string;
   children: React.ReactNode;
-  defaultOpen: boolean;
+  defaultOpen?: boolean;
 };
 
 const CustomModal = ({ children, defaultOpen, subheading, title }: Props) => {
