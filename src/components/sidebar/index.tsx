@@ -1,5 +1,5 @@
 import { getAuthUserDetails } from "@/lib/queries";
-import { off } from "process";
+
 import React from "react";
 import MenuOptions from "./menu-options";
 
@@ -22,7 +22,7 @@ const Sidebar = async ({ id, type }: Props) => {
   const isWhiteLabeledAgency = user.Agency.whiteLabel;
   if (!details) return;
 
-  let sideBarLogo = user.Agency.agencyLogo || "/assets/plura-logo.svg";
+  let sideBarLogo = user.Agency.agencyLogo || "/assets/QubeFlow-logo.svg";
 
   if (!isWhiteLabeledAgency) {
     if (type === "subaccount") {
