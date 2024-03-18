@@ -23,11 +23,11 @@ export default authMiddleware({
       ?.split(`${process.env.NEXT_PUBLIC_DOMAIN}`)
       .filter(Boolean)[0];
 
-    // if (customSubDomain) {
-    //   return NextResponse.rewrite(
-    //     new URL(`/${customSubDomain}${pathWithSearchParams}`, req.url)
-    //   );
-    // }
+    if (customSubDomain) {
+      return NextResponse.rewrite(
+        new URL(`/${customSubDomain}${pathWithSearchParams}`, req.url)
+      );
+    }
 
     if (url.pathname === "/sign-in" || url.pathname === "/sign-up") {
       return NextResponse.redirect(new URL(`/agency/sign-in`, req.url));
