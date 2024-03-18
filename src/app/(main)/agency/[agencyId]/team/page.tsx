@@ -46,6 +46,7 @@ const TeamPage = async ({ params }: Props) => {
       }
       modalChildren={
         <>
+          {/* //WIP Fix invitation issue with clerk */}
           <SendInvitation agencyId={agencyDetails.id} />
         </>
       }
