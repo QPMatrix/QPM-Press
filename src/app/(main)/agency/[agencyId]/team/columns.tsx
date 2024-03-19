@@ -206,13 +206,7 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
           </DropdownMenuItem>
           {rowData.role !== "AGENCY_OWNER" && (
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem
-                className="flex gap-2"
-                onClick={
-                  //WIP - remove user
-                  () => {}
-                }
-              >
+              <DropdownMenuItem className="flex gap-2" onClick={() => {}}>
                 <Trash size={15} /> Remove User
               </DropdownMenuItem>
             </AlertDialogTrigger>

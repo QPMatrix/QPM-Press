@@ -1,4 +1,3 @@
-import Unauthorized from "@/components/unauthorized";
 import { db } from "@/lib/db";
 import React from "react";
 import DataTable from "./data-table";
@@ -8,9 +7,7 @@ import { columns } from "./columns";
 import SendInvitation from "@/components/form/send-invitation";
 
 type Props = {
-  params: {
-    agencyId: string;
-  };
+  params: { agencyId: string };
 };
 
 const TeamPage = async ({ params }: Props) => {
@@ -26,7 +23,8 @@ const TeamPage = async ({ params }: Props) => {
       Permissions: { include: { SubAccount: true } },
     },
   });
-  if (!authUser) return <Unauthorized />;
+
+  if (!authUser) return null;
   const agencyDetails = await db.agency.findUnique({
     where: {
       id: params.agencyId,
@@ -35,7 +33,9 @@ const TeamPage = async ({ params }: Props) => {
       SubAccount: true,
     },
   });
+
   if (!agencyDetails) return;
+
   return (
     <DataTable
       actionButtonText={
@@ -44,15 +44,11 @@ const TeamPage = async ({ params }: Props) => {
           Add
         </>
       }
-      modalChildren={
-        <>
-          {/* //WIP Fix invitation issue with clerk */}
-          <SendInvitation agencyId={agencyDetails.id} />
-        </>
-      }
+      // WIP fixing send invitation issue
+      modalChildren={<SendInvitation agencyId={agencyDetails.id} />}
+      filterValue="name"
       columns={columns}
       data={teamMembers}
-      filterValue="name"
     ></DataTable>
   );
 };

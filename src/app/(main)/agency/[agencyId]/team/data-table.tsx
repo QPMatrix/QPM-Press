@@ -1,6 +1,15 @@
 "use client";
 import React from "react";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
@@ -12,15 +21,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CustomModal from "@/components/global/custom-modal";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ta } from "date-fns/locale";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -28,14 +29,13 @@ interface DataTableProps<TData, TValue> {
   actionButtonText?: React.ReactNode;
   modalChildren?: React.ReactNode;
 }
-
-const DataTable = <TData, TValue>({
+export default function DataTable<TData, TValue>({
   columns,
   data,
   filterValue,
   actionButtonText,
   modalChildren,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData, TValue>) {
   const { setOpen } = useModal();
   const table = useReactTable({
     data,
@@ -50,10 +50,12 @@ const DataTable = <TData, TValue>({
           <Search />
           <Input
             placeholder="Search Name..."
-            value={table?.getColumn(filterValue)?.getFilterValue() as string}
-            onChange={(e) =>
-              table?.getColumn(filterValue)?.setFilterValue(e.target.value)
+            value={
+              (table.getColumn(filterValue)?.getFilterValue() as string) ?? ""
             }
+            onChange={(event) => {
+              table.getColumn(filterValue)?.setFilterValue(event.target.value);
+            }}
             className="h-12"
           />
         </div>
@@ -80,16 +82,18 @@ const DataTable = <TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
             ))}
           </TableHeader>
@@ -125,6 +129,4 @@ const DataTable = <TData, TValue>({
       </div>
     </>
   );
-};
-
-export default DataTable;
+}

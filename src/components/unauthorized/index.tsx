@@ -15,7 +15,7 @@ const Unauthorized = (props: Props) => {
       />
       <h1 className="text-3xl md:text-6xl">Unauthorized access!</h1>
       <p>Please contact support or your agency owner to get access</p>
-      <Link href="/" className="mt-4 bg-primary p-2">
+      <Link href="/" className="mt-4 bg-primary p-2 text-white rounded-lg">
         Back to home
       </Link>
     </div>
