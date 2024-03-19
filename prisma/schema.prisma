@@ -38,28 +38,30 @@ model Permissions {
 }
 
 model Agency {
-  id               String                @id @default(uuid())
-  connectAccountId String?               @default("")
-  name             String
-  agencyLogo       String                @db.Text
-  companyEmail     String                @db.Text
-  companyPhone     String
-  whiteLabel       Boolean               @default(true)
-  address          String
-  city             String
-  zipCode          String
-  state            String
-  country          String
-  goal             Int                   @default(5)
-  createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @updatedAt
-  users            User[]
-  SubAccount       SubAccount[]
-  SidebarOption    AgencySidebarOption[]
-  Invitation       Invitation[]
-  Notification     Notification[]
-  Subscription     Subscription?
-  AddOns           AddOns[]
+  id               String  @id @default(uuid())
+  connectAccountId String? @default("")
+  customerId       String  @default("")
+
+  name          String
+  agencyLogo    String                @db.Text
+  companyEmail  String                @db.Text
+  companyPhone  String
+  whiteLabel    Boolean               @default(true)
+  address       String
+  city          String
+  zipCode       String
+  state         String
+  country       String
+  goal          Int                   @default(5)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  users         User[]
+  SubAccount    SubAccount[]
+  SidebarOption AgencySidebarOption[]
+  Invitation    Invitation[]
+  Notification  Notification[]
+  Subscription  Subscription?
+  AddOns        AddOns[]
 }
 
 model SubAccount {
@@ -344,7 +346,7 @@ model Subscription {
   priceId              String
   customerId           String
   currentPeriodEndDate DateTime
-  subscritiptionId     String   @unique
+  subscriptionId       String   @unique
   agencyId             String?  @unique
   Agency               Agency?  @relation(fields: [agencyId], references: [id])
 
@@ -428,6 +430,7 @@ enum InvitationStatus {
 }
 
 enum Plan {
-  price_1OYxkqFj9oKEERu1NbKUxXxN
-  price_1OYxkqFj9oKEERu1KfJGWxgN
+  price_1OwACQIFTrQBJ1TCVoSF45Fu
+  price_1OwAEkIFTrQBJ1TCiBDRBYFL
+  price_1OwAJvIFTrQBJ1TCnSaQKznd
 }

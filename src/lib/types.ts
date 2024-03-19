@@ -18,6 +18,7 @@ import {
 import { db } from './db';
 import { z } from 'zod';
 import { _getTicketsWithAllRelations } from './queries';
+import Stripe from 'stripe';
 
 export type NotificationWithUser =
   | ({
@@ -101,3 +102,21 @@ export const ContactUserFormSchema = z.object({
   name: z.string().min(1, 'Required'),
   email: z.string().email(),
 });
+export type ShippingInfo = {
+  address: Address;
+  name: string;
+};
+export type Address = {
+  city: string;
+  country: string;
+  line1: string;
+  postal_code: string;
+  state: string;
+};
+export type StripeCustomerType = {
+  email: string;
+  name: string;
+  shipping: ShippingInfo;
+  address: Address;
+};
+export type PriceList = Stripe.ApiList<Stripe.Price>;

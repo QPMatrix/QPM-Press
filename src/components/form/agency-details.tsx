@@ -1,11 +1,11 @@
-"use client";
-import { Agency } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import React, { useEffect, useState } from "react";
-import { NumberInput } from "@tremor/react";
-import { v4 } from "uuid";
+'use client';
+import { Agency } from '@prisma/client';
+import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { NumberInput } from '@tremor/react';
+import { v4 } from 'uuid';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,15 +16,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '../ui/alert-dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from '../ui/card';
 import {
   Form,
   FormControl,
@@ -33,29 +33,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { useToast } from "../ui/use-toast";
+} from '../ui/form';
+import { useToast } from '../ui/use-toast';
 
-import * as z from "zod";
-import FileUpload from "../global/file-upload";
-import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
+import * as z from 'zod';
+import FileUpload from '../global/file-upload';
+import { Input } from '../ui/input';
+import { Switch } from '../ui/switch';
 import {
   deleteAgency,
   initUser,
   saveActivityLogsNotification,
   updateAgencyDetails,
   upsertAgency,
-} from "@/lib/queries";
-import { Button } from "../ui/button";
-import Loading from "../global/loading";
+} from '@/lib/queries';
+import { Button } from '../ui/button';
+import Loading from '../global/loading';
 
 type Props = {
   data?: Partial<Agency>;
 };
 
 const FormSchema = z.object({
-  name: z.string().min(2, { message: "Agency name must be atleast 2 chars." }),
+  name: z.string().min(2, { message: 'Agency name must be atleast 2 chars.' }),
   companyEmail: z.string().min(1),
   companyPhone: z.string().min(1),
   whiteLabel: z.boolean(),
@@ -72,7 +72,7 @@ const AgencyDetails = ({ data }: Props) => {
   const router = useRouter();
   const [deletingAgency, setDeletingAgency] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: data?.name,
@@ -122,49 +122,49 @@ const AgencyDetails = ({ data }: Props) => {
           },
         };
 
-        // const customerResponse = await fetch("/api/stripe/create-customer", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(bodyData),
-        // });
-        // const customerData: { customerId: string } =
-        //   await customerResponse.json();
-        // custId = customerData.customerId;
+        const customerResponse = await fetch('/api/stripe/create-customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bodyData),
+        });
+        const customerData: { customerId: string } =
+          await customerResponse.json();
+        custId = customerData.customerId;
       }
-      //WIP custId
-      newUserData = await initUser({ role: "AGENCY_OWNER" });
-      if (!data) return;
-
-      await upsertAgency({
-        id: data?.id ? data.id : v4(),
-        address: values.address,
-        agencyLogo: values.agencyLogo,
-        city: values.city,
-        companyPhone: values.companyPhone,
-        country: values.country,
-        name: values.name,
-        state: values.state,
-        whiteLabel: values.whiteLabel,
-        zipCode: values.zipCode,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        companyEmail: values.companyEmail,
-        connectAccountId: "",
-        goal: 5,
-      });
-      toast({
-        title: "Created Agency",
-      });
-
+      newUserData = await initUser({ role: 'AGENCY_OWNER' });
+      if (!data?.customerId && !custId) return;
+      if (custId) {
+        await upsertAgency({
+          id: data?.id ? data.id : v4(),
+          address: values.address,
+          agencyLogo: values.agencyLogo,
+          city: values.city,
+          companyPhone: values.companyPhone,
+          country: values.country,
+          name: values.name,
+          state: values.state,
+          whiteLabel: values.whiteLabel,
+          zipCode: values.zipCode,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          companyEmail: values.companyEmail,
+          connectAccountId: '',
+          goal: 5,
+          customerId: custId,
+        });
+        toast({
+          title: 'Created Agency',
+        });
+      }
       return router.refresh();
     } catch (error) {
       console.log(error);
       toast({
-        variant: "destructive",
-        title: "Oppse!",
-        description: "could not create your agency",
+        variant: 'destructive',
+        title: 'Oppse!',
+        description: 'could not create your agency',
       });
     }
   };
@@ -175,16 +175,16 @@ const AgencyDetails = ({ data }: Props) => {
     try {
       const response = await deleteAgency(data.id);
       toast({
-        title: "Deleted Agency",
-        description: "Deleted your agency and all subaccounts",
+        title: 'Deleted Agency',
+        description: 'Deleted your agency and all subaccounts',
       });
       router.refresh();
     } catch (error) {
       console.log(error);
       toast({
-        variant: "destructive",
-        title: "Oppse!",
-        description: "could not delete your agency ",
+        variant: 'destructive',
+        title: 'Oppse!',
+        description: 'could not delete your agency ',
       });
     }
     setDeletingAgency(false);
@@ -394,7 +394,7 @@ const AgencyDetails = ({ data }: Props) => {
                 </div>
               )}
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? <Loading /> : "Save Agency Information"}
+                {isLoading ? <Loading /> : 'Save Agency Information'}
               </Button>
             </form>
           </Form>
@@ -413,7 +413,7 @@ const AgencyDetails = ({ data }: Props) => {
                 disabled={isLoading || deletingAgency}
                 className="text-red-600 p-2 text-center mt-2 rounded-md hove:bg-red-600 hover:text-white whitespace-nowrap"
               >
-                {deletingAgency ? "Deleting..." : "Delete Agency"}
+                {deletingAgency ? 'Deleting...' : 'Delete Agency'}
               </AlertDialogTrigger>
             </div>
           )}
