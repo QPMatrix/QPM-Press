@@ -1,4 +1,4 @@
-import { AlertDescription } from "@/components/ui/alert";
+import { AlertDescription } from '@/components/ui/alert';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,8 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -17,15 +17,15 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { getAuthUserDetails } from "@/lib/queries";
-import { SubAccount } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/components/ui/command';
+import { getAuthUserDetails } from '@/lib/queries';
+import { SubAccount } from '@prisma/client';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import React from "react";
-import DeleteButton from "./_components/delete-button";
-import CreateSubaccountButton from "./_components/create-subaccount-btn";
+import React from 'react';
+import DeleteButton from './_components/delete-button';
+import CreateSubaccountButton from './_components/create-subaccount-btn';
 
 type Props = {
   params: { agencyId: string };
@@ -67,7 +67,7 @@ const AllSubaccountsPage = async ({ params }: Props) => {
                         />
                       </div>
                       <div className="flex flex-col justify-between">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col text-muted-foreground">
                           {subaccount.name}
                           <span className="text-muted-foreground text-xs">
                             {subaccount.address}
@@ -77,8 +77,8 @@ const AllSubaccountsPage = async ({ params }: Props) => {
                     </Link>
                     <AlertDialogTrigger asChild>
                       <Button
-                        size={"sm"}
-                        variant={"destructive"}
+                        size={'sm'}
+                        variant={'destructive'}
                         className="w-20 hover:bg-red-600 hover:text-white !text-white"
                       >
                         Delete

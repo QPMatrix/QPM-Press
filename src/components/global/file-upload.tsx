@@ -1,20 +1,20 @@
-import React from "react";
-import Image from "next/image";
-import { FileIcon, X } from "lucide-react";
-import { Button } from "../ui/button";
-import { UploadDropzone } from "@/lib/uploadThing";
+import React from 'react';
+import Image from 'next/image';
+import { FileIcon, X } from 'lucide-react';
+import { Button } from '../ui/button';
+import { UploadDropzone } from '@/lib/uploadThing';
 type Props = {
-  apiEndpoint: "agencyLogo" | "avatar" | "subaccountLogo";
+  apiEndpoint: 'agencyLogo' | 'avatar' | 'subaccountLogo';
   onChange: (url: string) => void;
   value?: string;
 };
 
 const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
-  const type = value?.split(".").pop();
+  const type = value?.split('.').pop();
   if (value) {
     return (
       <div className="flex flex-col justify-center items-center">
-        {type !== "pdf" ? (
+        {type !== 'pdf' ? (
           <div className="relative w-40 h-40">
             <Image
               src={value}
@@ -36,9 +36,9 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
             </a>
           </div>
         )}
-        <Button variant="ghost" type="button" onClick={() => onChange("")}>
+        <Button variant="ghost" type="button" onClick={() => onChange('')}>
           <X className="h-4 w-4" />
-          Remove Logo
+          Remove
         </Button>
       </div>
     );

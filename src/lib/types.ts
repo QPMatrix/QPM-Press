@@ -7,10 +7,10 @@ import {
   Tag,
   Ticket,
   User,
-} from "@prisma/client";
-import { getAuthUserDetails, getUserPermissions } from "./queries";
-import { db } from "./db";
-import { z } from "zod";
+} from '@prisma/client';
+import { getAuthUserDetails, getMedia, getUserPermissions } from './queries';
+import { db } from './db';
+import { z } from 'zod';
 
 export type NotificationWithUser =
   | ({
@@ -36,7 +36,7 @@ export type UsersWithAgencySubAccountPermissionsSidebarOptions =
     typeof __getUsersWithAgencySubAccountPermissionsSidebarOptions
   >;
 const __getUsersWithAgencySubAccountPermissionsSidebarOptions = async (
-  agencyId: string
+  agencyId: string,
 ) => {
   return await db.user.findFirst({
     where: { Agency: { id: agencyId } },
@@ -46,3 +46,6 @@ const __getUsersWithAgencySubAccountPermissionsSidebarOptions = async (
     },
   });
 };
+
+export type GetMediaFile = Prisma.PromiseReturnType<typeof getMedia>;
+export type CreateMediaType = Prisma.MediaCreateWithoutSubaccountInput;

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 import {
   deleteSubAccount,
   getSubaccountDetails,
   saveActivityLogsNotification,
-} from "@/lib/queries";
-import { useRouter } from "next/navigation";
-import React from "react";
+} from '@/lib/queries';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 type Props = {
   subaccountId: string;

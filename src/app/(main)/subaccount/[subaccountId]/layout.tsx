@@ -1,3 +1,4 @@
+import BlurPage from "@/components/global/blur-page";
 import InfoBar from "@/components/global/info-bar";
 import Sidebar from "@/components/sidebar";
 import Unauthorized from "@/components/unauthorized";
@@ -63,7 +64,9 @@ const SubaccountLayout = async ({ children, params }: Props) => {
           role={user.privateMetadata.role as Role}
           subAccountId={params.subaccountId as string}
         />
-        <div className="relative">{children}</div>
+        <div className="relative">
+          <BlurPage>{children}</BlurPage>
+        </div>
       </div>
     </div>
   );
