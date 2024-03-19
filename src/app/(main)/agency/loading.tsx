@@ -1,10 +1,10 @@
-import Loading from "@/components/global/loading";
-import React from "react";
+import LoadingPage from '@/components/global/loading-page';
+import React from 'react';
 
 const LoadingAgencyPage = () => {
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
-      <Loading />
+    <div className="-mt-8 h-screen">
+      <LoadingPage />
     </div>
   );
 };

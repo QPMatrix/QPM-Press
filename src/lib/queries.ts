@@ -18,7 +18,11 @@ import { v4 } from 'uuid';
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { CreateMediaType } from './types';
+import {
+  CreateFunnelFormSchema,
+  CreateMediaType,
+  CreatePipelineFormSchema,
+} from './types';
 
 export const getAuthUserDetails = async () => {
   const user = await currentUser();
@@ -851,4 +855,19 @@ export const getPipelines = async (subaccountId: string) => {
     },
   });
   return response;
+};
+export const upsertFunnel = async (
+  subaccountId: string,
+  funnel: z.infer<typeof CreateFunnelFormSchema> & { liveProducts: string },
+  funnelId: string,
+) => {
+  const response = await db.funnel.upsert({
+    where: { id: funnelId },
+    update: funnel,
+    create: {
+      ...funnel,
+      id: funnelId || v4(),
+      subAccountId: subaccountId,
+    },
+  });
 };

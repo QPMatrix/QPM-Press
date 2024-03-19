@@ -1,16 +1,16 @@
-import BlurPage from "@/components/global/blur-page";
-import InfoBar from "@/components/global/info-bar";
-import Sidebar from "@/components/sidebar";
-import Unauthorized from "@/components/unauthorized";
+import BlurPage from '@/components/global/blur-page';
+import InfoBar from '@/components/global/info-bar';
+import Sidebar from '@/components/sidebar';
+import Unauthorized from '@/components/unauthorized';
 import {
   getAuthUserDetails,
   getNotificationAndUser,
   verifyAndAcceptInvitation,
-} from "@/lib/queries";
-import { currentUser } from "@clerk/nextjs";
-import { Role } from "@prisma/client";
-import { redirect } from "next/navigation";
-import React from "react";
+} from '@/lib/queries';
+import { currentUser } from '@clerk/nextjs';
+import { Role } from '@prisma/client';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +22,7 @@ const SubaccountLayout = async ({ children, params }: Props) => {
   if (!agencyId) return <Unauthorized />;
   const user = await currentUser();
   if (!user) {
-    return redirect("/");
+    return redirect('/');
   }
 
   let notifications: any = [];
@@ -33,7 +33,7 @@ const SubaccountLayout = async ({ children, params }: Props) => {
     const allPermissions = await getAuthUserDetails();
     const hasPermission = allPermissions?.Permissions.find(
       (permissions) =>
-        permissions.access && permissions.subAccountId === params.subaccountId
+        permissions.access && permissions.subAccountId === params.subaccountId,
     );
     if (!hasPermission) {
       return <Unauthorized />;
@@ -42,13 +42,13 @@ const SubaccountLayout = async ({ children, params }: Props) => {
     const allNotifications = await getNotificationAndUser(agencyId);
 
     if (
-      user.privateMetadata.role === "AGENCY_ADMIN" ||
-      user.privateMetadata.role === "AGENCY_OWNER"
+      user.privateMetadata.role === 'AGENCY_ADMIN' ||
+      user.privateMetadata.role === 'AGENCY_OWNER'
     ) {
       notifications = allNotifications;
     } else {
       const filteredNoti = allNotifications?.filter(
-        (item) => item.subAccountId === params.subaccountId
+        (item) => item.subAccountId === params.subaccountId,
       );
       if (filteredNoti) notifications = filteredNoti;
     }
