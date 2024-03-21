@@ -1,5 +1,5 @@
 'use server';
-import { Stripe } from 'stripe';
+import Stripe from 'stripe';
 import { db } from '../db';
 import { stripe } from '.';
 
@@ -17,8 +17,9 @@ export const subscriptionCreated = async (
       },
     });
     if (!agency) {
-      throw new Error('Could not find agency to upsert the subscription');
+      throw new Error('Could not find and agency to upsert the subscription');
     }
+
     const data = {
       active: subscription.status === 'active',
       agencyId: agency.id,
@@ -30,16 +31,17 @@ export const subscriptionCreated = async (
       //@ts-ignore
       plan: subscription.plan.id,
     };
-    const response = await db.subscription.upsert({
+
+    const res = await db.subscription.upsert({
       where: {
         agencyId: agency.id,
       },
       create: data,
       update: data,
     });
-    console.log(`Create subscription response: ${JSON.stringify(response)}`);
+    console.log(`🟢 Created Subscription for ${subscription.id}`);
   } catch (error) {
-    console.error('Error creating subscription', error);
+    console.log('🔴 Error from Create action', error);
   }
 };
 

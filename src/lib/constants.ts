@@ -30,8 +30,8 @@ import Warning from '@/components/icons/warning';
 export const pricingCards = [
   {
     title: 'Starter',
-    description: 'Perfect for trying out QubeFlow for a small team',
-    price: '&10',
+    description: 'Perfect for trying out QubeFlow',
+    price: '$10',
     duration: 'month',
     highlight: 'Key features',
     features: ['3 Sub accounts', '2 Team members', 'Unlimited pipelines'],
@@ -58,7 +58,7 @@ export const pricingCards = [
 ];
 
 export const addOnProducts = [
-  { title: 'Priority Support', id: 'prod_PNjJAE2EpP16pn' },
+  { title: 'Priority Support', id: 'prod_Pm32B6n82J28KR' },
 ];
 
 export const icons = [

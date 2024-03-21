@@ -2,12 +2,14 @@ import { stripe } from '@/lib/stripe';
 import { StripeCustomerType } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-export const POST = async (req: Request) => {
+export async function POST(req: Request) {
   const { address, email, name, shipping }: StripeCustomerType =
     await req.json();
-  if (!email || !name || !address || !shipping) {
-    return new NextResponse('Missing required fields', { status: 400 });
-  }
+
+  if (!email || !address || !name || !shipping)
+    return new NextResponse('Missing data', {
+      status: 400,
+    });
   try {
     const customer = await stripe.customers.create({
       email,
@@ -15,9 +17,9 @@ export const POST = async (req: Request) => {
       address,
       shipping,
     });
-    return NextResponse.json({ customerId: customer.id });
+    return Response.json({ customerId: customer.id });
   } catch (error) {
-    console.log(error);
-    return new NextResponse('Internal server error', { status: 500 });
+    console.log('🔴 Error', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
-};
+}
