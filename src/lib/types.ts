@@ -10,6 +10,7 @@ import {
 } from '@prisma/client';
 import {
   getAuthUserDetails,
+  getFunnels,
   getMedia,
   getPipelineDetails,
   getTicketsWithTags,
@@ -120,3 +121,11 @@ export type StripeCustomerType = {
   address: Address;
 };
 export type PriceList = Stripe.ApiList<Stripe.Price>;
+export type FunnelsForSubAccount = Prisma.PromiseReturnType<
+  typeof getFunnels
+>[0];
+export const FunnelPageSchema = z.object({
+  name: z.string().min(1),
+  pathName: z.string().optional(),
+});
+export type UpsertFunnelPage = Prisma.FunnelPageCreateWithoutFunnelInput;

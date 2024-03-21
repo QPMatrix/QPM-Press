@@ -27,7 +27,7 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
       id: params.subaccountId,
     },
   });
-  if (!subaccountDetails) return <Unauthorized />;
+  if (!subaccountDetails) return;
   const allDetailsExist =
     subaccountDetails.address &&
     subaccountDetails.address &&

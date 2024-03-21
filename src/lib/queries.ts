@@ -15,14 +15,13 @@ import {
   User,
 } from '@prisma/client';
 import { v4 } from 'uuid';
-
-import { z } from 'zod';
-import { revalidatePath } from 'next/cache';
 import {
   CreateFunnelFormSchema,
   CreateMediaType,
-  CreatePipelineFormSchema,
+  UpsertFunnelPage,
 } from './types';
+import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
 
 export const getAuthUserDetails = async () => {
   const user = await currentUser();
@@ -507,14 +506,6 @@ export const getMedia = async (subaccountId: string) => {
   return mediafiles;
 };
 
-export const deleteMedia = async (mediaId: string) => {
-  const response = await db.media.delete({
-    where: {
-      id: mediaId,
-    },
-  });
-  return response;
-};
 export const createMedia = async (
   subaccountId: string,
   mediaFile: CreateMediaType,
@@ -526,8 +517,19 @@ export const createMedia = async (
       subAccountId: subaccountId,
     },
   });
+
   return response;
 };
+
+export const deleteMedia = async (mediaId: string) => {
+  const response = await db.media.delete({
+    where: {
+      id: mediaId,
+    },
+  });
+  return response;
+};
+
 export const getPipelineDetails = async (pipelineId: string) => {
   const response = await db.pipeline.findUnique({
     where: {
@@ -556,6 +558,24 @@ export const getLanesWithTicketAndTags = async (pipelineId: string) => {
       },
     },
   });
+  return response;
+};
+
+export const upsertFunnel = async (
+  subaccountId: string,
+  funnel: z.infer<typeof CreateFunnelFormSchema> & { liveProducts: string },
+  funnelId: string,
+) => {
+  const response = await db.funnel.upsert({
+    where: { id: funnelId },
+    update: funnel,
+    create: {
+      ...funnel,
+      id: funnelId || v4(),
+      subAccountId: subaccountId,
+    },
+  });
+
   return response;
 };
 
@@ -819,6 +839,36 @@ export const updateFunnelProducts = async (
   return data;
 };
 
+export const upsertFunnelPage = async (
+  subaccountId: string,
+  funnelPage: UpsertFunnelPage,
+  funnelId: string,
+) => {
+  if (!subaccountId || !funnelId) return;
+  const response = await db.funnelPage.upsert({
+    where: { id: funnelPage.id || '' },
+    update: { ...funnelPage },
+    create: {
+      ...funnelPage,
+      content: funnelPage.content
+        ? funnelPage.content
+        : JSON.stringify([
+            {
+              content: [],
+              id: '__body',
+              name: 'Body',
+              styles: { backgroundColor: 'white' },
+              type: '__body',
+            },
+          ]),
+      funnelId,
+    },
+  });
+
+  revalidatePath(`/subaccount/${subaccountId}/funnels/${funnelId}`, 'page');
+  return response;
+};
+
 export const deleteFunnelePage = async (funnelPageId: string) => {
   const response = await db.funnelPage.delete({ where: { id: funnelPageId } });
 
@@ -855,19 +905,4 @@ export const getPipelines = async (subaccountId: string) => {
     },
   });
   return response;
-};
-export const upsertFunnel = async (
-  subaccountId: string,
-  funnel: z.infer<typeof CreateFunnelFormSchema> & { liveProducts: string },
-  funnelId: string,
-) => {
-  const response = await db.funnel.upsert({
-    where: { id: funnelId },
-    update: funnel,
-    create: {
-      ...funnel,
-      id: funnelId || v4(),
-      subAccountId: subaccountId,
-    },
-  });
 };
