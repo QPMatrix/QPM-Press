@@ -1,7 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import { useEffect, useState } from 'react';
 
 type Props = {
   imageSrc: string;
@@ -23,10 +23,10 @@ const Step = ({ imageSrc, description, buttonText }: Props) => {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const addButton = document.querySelector('.add-button') as HTMLElement;
+      addButton.style.display = 'block';
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -39,17 +39,21 @@ const Step = ({ imageSrc, description, buttonText }: Props) => {
     };
   }, []);
 
-  const handleClick = () => {
-    // Show the install prompt
-    deferredPrompt?.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt?.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-    });
+  const addButtonClick = () => {
+    const addButton = document.querySelector('.add-button') as HTMLElement;
+    addButton.style.display = 'none';
+
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        setDeferredPrompt(null);
+      });
+    }
   };
 
   return (
@@ -64,7 +68,9 @@ const Step = ({ imageSrc, description, buttonText }: Props) => {
         />
         <p>{description}</p>
       </div>
-      <Button onClick={handleClick}>{buttonText}</Button>
+      <Button className="add-button" onClick={addButtonClick}>
+        {buttonText}
+      </Button>
     </div>
   );
 };
