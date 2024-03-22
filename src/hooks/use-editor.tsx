@@ -1,3 +1,4 @@
+'use client';
 import { EditorContext } from '@/providers/editor/editor-provider';
 import { useContext } from 'react';
 

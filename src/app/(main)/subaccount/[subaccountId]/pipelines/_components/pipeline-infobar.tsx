@@ -13,13 +13,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
 import { useModal } from '@/hooks/use-modal';
+import { cn } from '@/lib/utils';
 import { Pipeline } from '@prisma/client';
 import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { useRouter } from 'next/navigation';
 
 type Props = {
   subAccountId: string;
@@ -31,21 +30,16 @@ const PipelineInfoBar = ({ pipelineId, pipelines, subAccountId }: Props) => {
   const { setOpen: setOpenModal, setClose } = useModal();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(pipelineId);
-  const router = useRouter();
+
   const handleClickCreatePipeline = () => {
-    try {
-      setOpenModal(
-        <CustomModal
-          title="Create A Pipeline"
-          subheading="Pipelines allows you to group tickets into lanes and track your business processes all in one place."
-        >
-          <CreatePipelineForm subAccountId={subAccountId} />
-        </CustomModal>,
-      );
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-    }
+    setOpenModal(
+      <CustomModal
+        title="Create A Pipeline"
+        subheading="Pipelines allows you to group tickets into lanes and track your business processes all in one place."
+      >
+        <CreatePipelineForm subAccountId={subAccountId} />
+      </CustomModal>,
+    );
   };
 
   return (

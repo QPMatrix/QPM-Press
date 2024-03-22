@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Unauthorized from '@/components/unauthorized';
 import { db } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 import { getStripeOAuthLink } from '@/lib/utils';
@@ -17,19 +16,25 @@ import Link from 'next/link';
 import React from 'react';
 
 type Props = {
+  searchParams: {
+    state: string;
+    code: string;
+  };
   params: { subaccountId: string };
-  searchParams: { state: string; code: string };
 };
 
-const LaunchPadPage = async ({ params, searchParams }: Props) => {
+const LaunchPad = async ({ params, searchParams }: Props) => {
   const subaccountDetails = await db.subAccount.findUnique({
     where: {
       id: params.subaccountId,
     },
   });
-  if (!subaccountDetails) return;
+
+  if (!subaccountDetails) {
+    return;
+  }
+
   const allDetailsExist =
-    subaccountDetails.address &&
     subaccountDetails.address &&
     subaccountDetails.subAccountLogo &&
     subaccountDetails.city &&
@@ -37,8 +42,8 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
     subaccountDetails.companyPhone &&
     subaccountDetails.country &&
     subaccountDetails.name &&
-    subaccountDetails.state &&
-    subaccountDetails.zipCode;
+    subaccountDetails.state;
+
   const stripeOAuthLink = getStripeOAuthLink(
     'subaccount',
     `launchpad___${subaccountDetails.id}`,
@@ -63,105 +68,92 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
       }
     }
   }
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="w-full h-full max-w-[800px]">
-        <Card className="border-none">
-          <CardHeader>
-            <CardTitle>Lets get started!</CardTitle>
-            <CardDescription>
-              Follow the steps below to get your account setup.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                {/* WIP MAKE IT WORK */}
-                <Image
-                  src="/assets/appstore.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p> Save the website as a shortcut on your mobile device</p>
+    <BlurPage>
+      <div className="flex flex-col justify-center items-center">
+        <div className="w-full h-full max-w-[800px]">
+          <Card className="border-none ">
+            <CardHeader>
+              <CardTitle>Lets get started!</CardTitle>
+              <CardDescription>
+                Follow the steps below to get your account setup correctly.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex justify-between items-center w-full h-20 border p-4 rounded-lg ">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src="/appstore.png"
+                    alt="App logo"
+                    height={80}
+                    width={80}
+                    className="rounded-md object-contain"
+                  />
+                  <p>Save the website as a shortcut on your mobile devide</p>
+                </div>
+                <Button>Start</Button>
               </div>
-              <Button>Start</Button>
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src="/assets/stripelogo.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p>
-                  Connect your stripe account to accept payments and see your
-                  dashboard.
-                </p>
+              <div className="flex justify-between items-center w-full h-20 border p-4 rounded-lg">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src="/stripelogo.png"
+                    alt="App logo"
+                    height={80}
+                    width={80}
+                    className="rounded-md object-contain "
+                  />
+                  <p>
+                    Connect your stripe account to accept payments. Stripe is
+                    used to run payouts.
+                  </p>
+                </div>
+                {subaccountDetails.connectAccountId ||
+                connectedStripeAccount ? (
+                  <CheckCircleIcon
+                    size={50}
+                    className=" text-primary p-2 flex-shrink-0"
+                  />
+                ) : (
+                  <Link
+                    className="bg-primary py-2 px-4 rounded-md text-white"
+                    href={stripeOAuthLink}
+                  >
+                    Start
+                  </Link>
+                )}
               </div>
-              {subaccountDetails.connectAccountId || connectedStripeAccount ? (
-                <CheckCircleIcon
-                  size={50}
-                  className=" text-primary p-2 flex-shrink-0"
-                />
-              ) : (
-                <Link
-                  className="bg-primary py-2 px-4 rounded-md text-white"
-                  href={stripeOAuthLink}
-                >
-                  Start
-                </Link>
-              )}
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src="/assets/paypal.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p>
-                  Connect your paypal account to accept payments and see your
-                  dashboard.
-                </p>
+              <div className="flex justify-between items-center w-full h-20 border p-4 rounded-lg">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src={subaccountDetails.subAccountLogo}
+                    alt="App logo"
+                    height={80}
+                    width={80}
+                    className="rounded-md object-contain p-4"
+                  />
+                  <p>Fill in all your business details.</p>
+                </div>
+                {allDetailsExist ? (
+                  <CheckCircleIcon
+                    size={50}
+                    className=" text-primary p-2 flex-shrink-0"
+                  />
+                ) : (
+                  <Link
+                    className="bg-primary py-2 px-4 rounded-md text-white"
+                    href={`/subaccount/${subaccountDetails.id}/settings`}
+                  >
+                    Start
+                  </Link>
+                )}
               </div>
-              <Button>Start</Button>
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src={subaccountDetails.subAccountLogo}
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p> Fill in all your bussiness details</p>
-              </div>
-              {allDetailsExist ? (
-                <CheckCircleIcon
-                  size={50}
-                  className="text-primary p-2 flex-shrink-0"
-                />
-              ) : (
-                <Link
-                  className="bg-primary py-2 px-4 rounded-md text-white"
-                  href={`/agency/${params.subaccountId}/settings`}
-                >
-                  Start
-                </Link>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </BlurPage>
   );
 };
 
-export default LaunchPadPage;
+export default LaunchPad;

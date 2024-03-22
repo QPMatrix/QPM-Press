@@ -15,10 +15,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { deletePipeline, saveActivityLogsNotification } from '@/lib/queries';
+import { deletePipeline } from '@/lib/queries';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import Loading from '@/components/global/loading';
 
 const PipelineSettings = ({
   pipelineId,
@@ -29,16 +28,13 @@ const PipelineSettings = ({
   subaccountId: string;
   pipelines: Pipeline[];
 }) => {
-  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   return (
     <AlertDialog>
       <div>
         <div className="flex items-center justify-between mb-4">
           <AlertDialogTrigger asChild>
-            <Button variant={'destructive'}>
-              {loading ? <Loading /> : 'Delete Pipeline'}
-            </Button>
+            <Button variant={'destructive'}>Delete Pipeline</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -53,27 +49,19 @@ const PipelineSettings = ({
               <AlertDialogAction
                 onClick={async () => {
                   try {
-                    setLoading(true);
-                    const response = await deletePipeline(pipelineId);
-                    await saveActivityLogsNotification({
-                      agencyId: undefined,
-                      description: `Deleted a Pipeline | ${response.name}`,
-                      subaccountId,
-                    });
+                    await deletePipeline(pipelineId);
+                    //Challenge: Activity log
                     toast({
                       title: 'Deleted',
                       description: 'Pipeline is deleted',
                     });
                     router.replace(`/subaccount/${subaccountId}/pipelines`);
                   } catch (error) {
-                    setLoading(false);
                     toast({
                       variant: 'destructive',
                       title: 'Oppse!',
                       description: 'Could Delete Pipeline',
                     });
-                  } finally {
-                    setLoading(false);
                   }
                 }}
               >
