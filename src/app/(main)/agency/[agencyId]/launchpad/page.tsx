@@ -1,5 +1,4 @@
 import BusinessDetailsStep from '@/components/lanchpad/business-details-step';
-import Step from '@/components/lanchpad/step';
 import StripeStep from '@/components/lanchpad/stripe-step';
 import { Button } from '@/components/ui/button';
 import {
@@ -74,21 +73,16 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <Step
-              imageSrc="/assets/appstore.png"
-              description="Save the website as a shortcut on your mobile device"
-              buttonText="Start"
-            />
             <StripeStep
               agencyDetails={agencyDetails}
               connectedStripeAccount={connectedStripeAccount}
               stripeOAuthLink={stripeOAuthLink}
             />
-            <Step
+            {/* <Step
               imageSrc="/assets/paypal.png"
               description="Connect your paypal account to accept payments and see your dashboard."
               buttonText="Start"
-            />
+            /> */}
             <BusinessDetailsStep
               agencyDetails={agencyDetails}
               allDetailsExist={allDetailsExist}
