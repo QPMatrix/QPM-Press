@@ -1,3 +1,6 @@
+import BusinessDetailsStep from '@/components/lanchpad/business-details-step';
+import Step from '@/components/lanchpad/step';
+import StripeStep from '@/components/lanchpad/stripe-step';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -71,89 +74,26 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                {/* WIP MAKE IT WORK */}
-                <Image
-                  src="/assets/appstore.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p> Save the website as a shortcut on your mobile device</p>
-              </div>
-              <Button>Start</Button>
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src="/assets/stripelogo.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p>
-                  Connect your stripe account to accept payments and see your
-                  dashboard.
-                </p>
-              </div>
-              {agencyDetails.connectAccountId || connectedStripeAccount ? (
-                <CheckCircleIcon
-                  size={50}
-                  className="text-primary p-2 flex-shrink-0"
-                />
-              ) : (
-                <Link
-                  className="bg-primary py-2 px-4 rounded-md text-white"
-                  href={stripeOAuthLink}
-                >
-                  Start
-                </Link>
-              )}
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src="/assets/paypal.png"
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p>
-                  Connect your paypal account to accept payments and see your
-                  dashboard.
-                </p>
-              </div>
-              <Button>Start</Button>
-            </div>
-            <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
-              <div className="flex md:items-center gap-4 flex-col md:!flex-row">
-                <Image
-                  src={agencyDetails.agencyLogo}
-                  alt="app logo"
-                  height={80}
-                  width={80}
-                  className="rounded-md object-contain"
-                />
-                <p> Fill in all your bussiness details</p>
-              </div>
-              {allDetailsExist ? (
-                <CheckCircleIcon
-                  size={50}
-                  className="text-primary p-2 flex-shrink-0"
-                />
-              ) : (
-                <Link
-                  className="bg-primary py-2 px-4 rounded-md text-white"
-                  href={`/agency/${params.agencyId}/settings`}
-                >
-                  Start
-                </Link>
-              )}
-            </div>
+            <Step
+              imageSrc="/assets/appstore.png"
+              description="Save the website as a shortcut on your mobile device"
+              buttonText="Start"
+            />
+            <StripeStep
+              agencyDetails={agencyDetails}
+              connectedStripeAccount={connectedStripeAccount}
+              stripeOAuthLink={stripeOAuthLink}
+            />
+            <Step
+              imageSrc="/assets/paypal.png"
+              description="Connect your paypal account to accept payments and see your dashboard."
+              buttonText="Start"
+            />
+            <BusinessDetailsStep
+              agencyDetails={agencyDetails}
+              allDetailsExist={allDetailsExist}
+              agencyId={params.agencyId}
+            />
           </CardContent>
         </Card>
       </div>
