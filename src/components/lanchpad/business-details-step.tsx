@@ -1,24 +1,37 @@
-import { Agency } from '@prisma/client';
+import { Agency, SubAccount } from '@prisma/client';
 import { CheckCircleIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
+
 type Props = {
-  agencyDetails: Agency;
-  allDetailsExist: any;
-  agencyId: string;
+  agencyDetails?: Agency;
+  allDetailsExist: string;
+  agencyId?: string;
+  subaccountDetails?: SubAccount;
+  subaccountId?: string;
 };
 
 const BusinessDetailsStep = ({
   agencyDetails,
   allDetailsExist,
   agencyId,
+  subaccountDetails,
+  subaccountId,
 }: Props) => {
+  const logo =
+    agencyDetails?.agencyLogo ||
+    subaccountDetails?.subAccountLogo ||
+    '/assets/QubeFlow-logo.svg';
+  const link = agencyId
+    ? `/agency/${agencyId}/settings`
+    : `/subaccount/${subaccountId}/settings`;
+
   return (
     <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
       <div className="flex md:items-center gap-4 flex-col md:!flex-row">
         <Image
-          src={agencyDetails.agencyLogo}
+          src={logo}
           alt="app logo"
           height={80}
           width={80}
@@ -31,7 +44,7 @@ const BusinessDetailsStep = ({
       ) : (
         <Link
           className="bg-primary py-2 px-4 rounded-md text-white"
-          href={`/agency/${agencyId}/settings`}
+          href={link}
         >
           Start
         </Link>

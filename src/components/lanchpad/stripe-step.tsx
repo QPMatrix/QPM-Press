@@ -2,18 +2,27 @@ import { CheckCircleIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-import { Agency } from '@prisma/client';
+import { Agency, SubAccount } from '@prisma/client';
+
 type Props = {
-  agencyDetails: Agency;
+  agencyDetails?: Agency;
   connectedStripeAccount: boolean;
   stripeOAuthLink: string;
+  subaccountDetails?: SubAccount;
 };
 
 const StripeStep = ({
   agencyDetails,
   connectedStripeAccount,
   stripeOAuthLink,
+  subaccountDetails,
 }: Props) => {
+  const connected = agencyDetails
+    ? agencyDetails.connectAccountId || connectedStripeAccount
+    : subaccountDetails
+    ? subaccountDetails.connectAccountId || connectedStripeAccount
+    : false;
+
   return (
     <div className="flex justify-between items-center w-full border p-4 rounded-lg gap-2">
       <div className="flex md:items-center gap-4 flex-col md:!flex-row">
@@ -28,7 +37,7 @@ const StripeStep = ({
           Connect your stripe account to accept payments and see your dashboard.
         </p>
       </div>
-      {agencyDetails.connectAccountId || connectedStripeAccount ? (
+      {connected ? (
         <CheckCircleIcon size={50} className="text-primary p-2 flex-shrink-0" />
       ) : (
         <Link
