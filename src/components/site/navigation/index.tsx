@@ -19,7 +19,7 @@ const Navigation = ({ user }: Props) => {
           height={40}
           alt="QubeFlow logo"
         />
-        <span className="text-xl font-bold"> QubeFlow.</span>
+        <span className="hidden md:text-xl md:font-bold"> QubeFlow.</span>
       </aside>
       <nav className="hidden md:block absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]">
         <ul className="flex items-center justify-center gap-8">
