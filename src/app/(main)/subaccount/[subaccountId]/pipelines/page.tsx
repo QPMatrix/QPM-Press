@@ -1,55 +1,32 @@
-import SubAccountDetails from '@/components/form/subaccount-details';
-import UserDetails from '@/components/form/user-details';
-import BlurPage from '@/components/global/blur-page';
 import { db } from '@/lib/db';
-import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 type Props = {
   params: { subaccountId: string };
 };
 
-const SubaccountSettingPage = async ({ params }: Props) => {
-  const authUser = await currentUser();
-  if (!authUser) return;
-  const userDetails = await db.user.findUnique({
-    where: {
-      email: authUser.emailAddresses[0].emailAddress,
-    },
-  });
-  if (!userDetails) return;
-
-  const subAccount = await db.subAccount.findUnique({
-    where: { id: params.subaccountId },
-  });
-  if (!subAccount) return;
-
-  const agencyDetails = await db.agency.findUnique({
-    where: { id: subAccount.agencyId },
-    include: { SubAccount: true },
+const Pipelines = async ({ params }: Props) => {
+  const pipelineExists = await db.pipeline.findFirst({
+    where: { subAccountId: params.subaccountId },
   });
 
-  if (!agencyDetails) return;
-  const subAccounts = agencyDetails.SubAccount;
+  if (pipelineExists)
+    return redirect(
+      `/subaccount/${params.subaccountId}/pipelines/${pipelineExists.id}`,
+    );
 
-  return (
-    <BlurPage>
-      <div className="flex lg:!flex-row flex-col gap-4">
-        <SubAccountDetails
-          agencyDetails={agencyDetails}
-          details={subAccount}
-          userId={userDetails.id}
-          userName={userDetails.name}
-        />
-        <UserDetails
-          type="subaccount"
-          id={params.subaccountId}
-          subAccounts={subAccounts}
-          userData={userDetails}
-        />
-      </div>
-    </BlurPage>
-  );
+  try {
+    const response = await db.pipeline.create({
+      data: { name: 'First Pipeline', subAccountId: params.subaccountId },
+    });
+
+    return redirect(
+      `/subaccount/${params.subaccountId}/pipelines/${response.id}`,
+    );
+  } catch (error) {
+    console.log();
+  }
 };
 
-export default SubaccountSettingPage;
+export default Pipelines;
