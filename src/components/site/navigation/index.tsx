@@ -42,8 +42,8 @@ const Navigation = ({ user }: Props) => {
         <ul className="flex items-center justify-center gap-8">
           <Link href={'/'}>Pricing</Link>
           <Link href={'/about'}>About</Link>
-          <Link href={'#'}>Documentation</Link>
-          <Link href={'#'}>Features</Link>
+          <Link href={'/documentation'}>Documentation</Link>
+          <Link href={'/features'}>Features</Link>
         </ul>
       </nav>
       <aside className="hidden md:!flex gap-2 items-center">
