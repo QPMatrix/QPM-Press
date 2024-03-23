@@ -13,13 +13,13 @@ const AboutPage = () => {
         </h1>
         <p className="text-muted-foreground text-lg md:text-xl dark:text-gray-300">
           QubeFlow, powered by QPMatrix, is more than just a website builder.
-          It's a comprehensive solution designed to streamline the management of
-          your agency. With QubeFlow, you can handle all the details and
-          payments in one place, saving you time and effort. Our current
-          provider is subdomain, but we're working on domain support in the next
-          update. We're also leveraging the power of AI to enhance your
-          experience and provide you with smart, efficient tools for managing
-          your agency.
+          It&apos;s a comprehensive solution designed to streamline the
+          management of your agency. With QubeFlow, you can handle all the
+          details and payments in one place, saving you time and effort. Our
+          current provider is subdomain, but we&apos;re working on domain
+          support in the next update. We&apos;re also leveraging the power of AI
+          to enhance your experience and provide you with smart, efficient tools
+          for managing your agency.
         </p>
         <Link
           href="http://www.qpmatrix.tech"

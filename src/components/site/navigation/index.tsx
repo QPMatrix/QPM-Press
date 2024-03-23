@@ -1,4 +1,6 @@
+'use client';
 import { ModeToggle } from '@/components/global/mode-toggle';
+import { Sheet } from '@/components/ui/sheet';
 import { UserButton } from '@clerk/nextjs';
 import { User } from '@clerk/nextjs/server';
 import Image from 'next/image';
@@ -19,7 +21,7 @@ const Navigation = ({ user }: Props) => {
           height={40}
           alt="QubeFlow logo"
         />
-        <span className="hidden md:text-xl md:font-bold"> QubeFlow.</span>
+        <span className="text-xl font-bold"> QubeFlow.</span>
       </aside>
       <nav className="hidden md:block absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]">
         <ul className="flex items-center justify-center gap-8">
@@ -29,7 +31,7 @@ const Navigation = ({ user }: Props) => {
           <Link href={'#'}>Features</Link>
         </ul>
       </nav>
-      <aside className="flex gap-2 items-center">
+      <aside className="hidden md:!flex gap-2 items-center">
         <Link
           href={'/agency'}
           className="bg-primary text-white p-2 px-4 rounded-md hover:bg-primary/80"
@@ -38,6 +40,9 @@ const Navigation = ({ user }: Props) => {
         </Link>
         <UserButton />
         <ModeToggle />
+      </aside>
+      <aside className="md:hidden ">
+        <Sheet></Sheet>
       </aside>
     </div>
   );
