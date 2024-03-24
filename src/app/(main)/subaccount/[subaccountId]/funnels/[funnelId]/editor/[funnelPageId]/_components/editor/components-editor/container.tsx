@@ -169,6 +169,21 @@ const Container = ({ element }: Props) => {
           },
         });
         break;
+      case 'navbar':
+        dispatch({
+          type: 'ADD_ELEMENT',
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [],
+              id: v4(),
+              name: 'Navbar',
+              styles: {},
+              type: 'navbar',
+            },
+          },
+        });
+        break;
     }
   };
 

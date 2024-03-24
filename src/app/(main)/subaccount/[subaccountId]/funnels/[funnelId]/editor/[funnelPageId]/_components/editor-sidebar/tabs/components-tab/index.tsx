@@ -14,6 +14,7 @@ import LinkPlaceholder from './link-placeholder';
 import ContactFormComponentPlaceholder from './contact-form-placeholder';
 import CheckoutPlaceholder from './checkout-placeholder';
 import MapPlaceholder from './map-placeholder';
+import NavBarPlaceHolder from './navbar-placeholder';
 
 const ComponentsTab = () => {
   const elements: {
@@ -38,6 +39,12 @@ const ComponentsTab = () => {
       Component: <TwoColumnsPlaceholder />,
       label: '2 Columns',
       id: '2Col',
+      group: 'layout',
+    },
+    {
+      Component: <NavBarPlaceHolder />,
+      label: 'Navbar',
+      id: 'navbar',
       group: 'layout',
     },
     {

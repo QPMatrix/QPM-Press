@@ -223,7 +223,8 @@ export type EditorBtns =
   | null
   | '3Col'
   | 'list'
-  | 'map';
+  | 'map'
+  | 'navbar';
 
 export const defaultStyles: React.CSSProperties = {
   backgroundPosition: 'center',
