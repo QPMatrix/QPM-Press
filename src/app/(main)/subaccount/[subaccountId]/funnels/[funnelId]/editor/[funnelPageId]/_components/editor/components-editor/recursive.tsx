@@ -1,4 +1,4 @@
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import React from 'react';
 import TextComponent from './text';
 import Container from './container';
@@ -6,6 +6,7 @@ import VideoComponent from './video';
 import LinkComponent from './link-component';
 import ContactFormComponent from './contact-form-component';
 import Checkout from './checkout';
+import MapComponent from './map-component';
 
 type Props = {
   element: EditorElement;
@@ -30,6 +31,9 @@ const Recursive = ({ element }: Props) => {
 
     case 'link':
       return <LinkComponent element={element} />;
+
+    case 'map':
+      return <MapComponent element={element} />;
     default:
       return null;
   }

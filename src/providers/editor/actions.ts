@@ -1,4 +1,4 @@
-import { DeviceTypes, EditorElement } from './editor-provider';
+import { DeviceTypes, EditorElement } from './types';
 
 export type EditorAction =
   | {
@@ -56,6 +56,20 @@ export type EditorAction =
       payload: {
         elements: EditorElement[];
         withLive: boolean;
+      };
+    }
+  | {
+      type: 'UPDATE_LOCATION';
+      payload: {
+        elementDetails: {
+          id: string;
+          content: {
+            location: {
+              lat: number;
+              lng: number;
+            };
+          };
+        };
       };
     }
   | {

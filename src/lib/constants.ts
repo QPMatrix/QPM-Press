@@ -221,7 +221,9 @@ export type EditorBtns =
   | '__body'
   | 'image'
   | null
-  | '3Col';
+  | '3Col'
+  | 'list'
+  | 'map';
 
 export const defaultStyles: React.CSSProperties = {
   backgroundPosition: 'center',

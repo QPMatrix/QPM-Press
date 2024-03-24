@@ -11,7 +11,7 @@ import {
 } from '@/lib/queries';
 
 import { ContactUserFormSchema } from '@/lib/types';
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';

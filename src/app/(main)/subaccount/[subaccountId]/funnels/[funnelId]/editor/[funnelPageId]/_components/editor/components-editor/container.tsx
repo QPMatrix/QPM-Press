@@ -1,7 +1,7 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
 import { EditorBtns, defaultStyles } from '@/lib/constants';
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import clsx from 'clsx';
 import React from 'react';
 import { v4 } from 'uuid';
@@ -147,6 +147,24 @@ const Container = ({ element }: Props) => {
               name: 'Two Columns',
               styles: { ...defaultStyles, display: 'flex' },
               type: '2Col',
+            },
+          },
+        });
+        break;
+      case 'map':
+        dispatch({
+          type: 'ADD_ELEMENT',
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: {
+                location: { lat: 51.505, lng: -0.09 },
+                zoom: 13,
+              },
+              id: v4(),
+              name: 'Map',
+              styles: { ...defaultStyles, width: '100%', height: '300px' },
+              type: 'map',
             },
           },
         });

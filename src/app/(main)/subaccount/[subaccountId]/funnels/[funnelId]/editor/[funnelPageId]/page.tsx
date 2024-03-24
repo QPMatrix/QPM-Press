@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import EditorProvider from '@/providers/editor/editor-provider';
+import EditorProvider from '@/providers/editor';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import FunnelEditorNavigation from './_components/navigation';

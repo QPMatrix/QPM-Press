@@ -1,5 +1,5 @@
 'use client';
-import { EditorContext } from '@/providers/editor/editor-provider';
+import { EditorContext } from '@/providers/editor/context';
 import { useContext } from 'react';
 
 export const useEditor = () => {

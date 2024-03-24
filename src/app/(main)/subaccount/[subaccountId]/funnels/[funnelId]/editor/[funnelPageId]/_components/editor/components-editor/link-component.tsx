@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { useEditor } from '@/hooks/use-editor';
 import { EditorBtns } from '@/lib/constants';
 
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import Link from 'next/link';

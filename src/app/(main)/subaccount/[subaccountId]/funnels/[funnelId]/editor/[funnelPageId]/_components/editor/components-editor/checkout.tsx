@@ -6,7 +6,7 @@ import { useEditor } from '@/hooks/use-editor';
 import { EditorBtns } from '@/lib/constants';
 import { getFunnel, getSubaccountDetails } from '@/lib/queries';
 import { getStripe } from '@/lib/stripe/stripe-client';
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,

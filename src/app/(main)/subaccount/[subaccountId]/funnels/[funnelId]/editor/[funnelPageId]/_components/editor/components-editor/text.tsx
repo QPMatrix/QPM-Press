@@ -1,7 +1,7 @@
 'use client';
 import { Badge } from '@/components/ui/badge';
 import { useEditor } from '@/hooks/use-editor';
-import { EditorElement } from '@/providers/editor/editor-provider';
+import { EditorElement } from '@/providers/editor/types';
 import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import React from 'react';
@@ -31,7 +31,6 @@ const TextComponent = (props: Props) => {
     });
   };
 
-  //WE ARE NOT ADDING DRAG DROP
   return (
     <div
       style={styles}

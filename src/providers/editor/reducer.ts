@@ -1,135 +1,13 @@
-'use client';
-import { EditorBtns } from '@/lib/constants';
-import { EditorAction } from './editor-actions';
-import { Dispatch, createContext, useContext, useReducer } from 'react';
-import { FunnelPage } from '@prisma/client';
+import { EditorAction } from './actions';
+import {
+  addAnElement,
+  deleteAnElement,
+  updateAnElement,
+  updateElementLocation,
+} from './functions';
+import { EditorState, initialEditorState, initialState } from './types';
 
-export type DeviceTypes = 'Desktop' | 'Mobile' | 'Tablet';
-
-export type EditorElement = {
-  id: string;
-  styles: React.CSSProperties;
-  name: string;
-  type: EditorBtns;
-  content:
-    | EditorElement[]
-    | { href?: string; innerText?: string; src?: string };
-};
-
-export type Editor = {
-  liveMode: boolean;
-  elements: EditorElement[];
-  selectedElement: EditorElement;
-  device: DeviceTypes;
-  previewMode: boolean;
-  funnelPageId: string;
-};
-
-export type HistoryState = {
-  history: Editor[];
-  currentIndex: number;
-};
-
-export type EditorState = {
-  editor: Editor;
-  history: HistoryState;
-};
-
-const initialEditorState: EditorState['editor'] = {
-  elements: [
-    {
-      content: [],
-      id: '__body',
-      name: 'Body',
-      styles: {},
-      type: '__body',
-    },
-  ],
-  selectedElement: {
-    id: '',
-    content: [],
-    name: '',
-    styles: {},
-    type: null,
-  },
-  device: 'Desktop',
-  previewMode: false,
-  liveMode: false,
-  funnelPageId: '',
-};
-
-const initialHistoryState: HistoryState = {
-  history: [initialEditorState],
-  currentIndex: 0,
-};
-
-const initialState: EditorState = {
-  editor: initialEditorState,
-  history: initialHistoryState,
-};
-//recursive function to add an element to the editor state
-const addAnElement = (
-  editorArray: EditorElement[],
-  action: EditorAction,
-): EditorElement[] => {
-  if (action.type !== 'ADD_ELEMENT')
-    throw Error(
-      'You sent the wrong action type to the Add Element editor State',
-    );
-  return editorArray.map((item) => {
-    if (item.id === action.payload.containerId && Array.isArray(item.content)) {
-      return {
-        ...item,
-        content: [...item.content, action.payload.elementDetails],
-      };
-    } else if (item.content && Array.isArray(item.content)) {
-      return {
-        ...item,
-        content: addAnElement(item.content, action),
-      };
-    }
-    return item;
-  });
-};
-//recursive function to update an element in the editor state
-const updateAnElement = (
-  editorArray: EditorElement[],
-  action: EditorAction,
-): EditorElement[] => {
-  if (action.type !== 'UPDATE_ELEMENT') {
-    throw Error('You sent the wrong action type to the update Element State');
-  }
-  return editorArray.map((item) => {
-    if (item.id === action.payload.elementDetails.id) {
-      return { ...item, ...action.payload.elementDetails };
-    } else if (item.content && Array.isArray(item.content)) {
-      return {
-        ...item,
-        content: updateAnElement(item.content, action),
-      };
-    }
-    return item;
-  });
-};
-const deleteAnElement = (
-  editorArray: EditorElement[],
-  action: EditorAction,
-): EditorElement[] => {
-  if (action.type !== 'DELETE_ELEMENT')
-    throw Error(
-      'You sent the wrong action type to the Delete Element editor State',
-    );
-  return editorArray.filter((item) => {
-    if (item.id === action.payload.elementDetails.id) {
-      return false;
-    } else if (item.content && Array.isArray(item.content)) {
-      item.content = deleteAnElement(item.content, action);
-    }
-    return true;
-  });
-};
-
-const editorReducer = (
+export const editorReducer = (
   state: EditorState = initialState,
   action: EditorAction,
 ): EditorState => {
@@ -325,52 +203,30 @@ const editorReducer = (
         },
       };
       return funnelPageIdState;
-
+    case 'UPDATE_LOCATION':
+      const updatedElementsLocation = updateElementLocation(
+        state.editor.elements,
+        action,
+      );
+      const updatedEditorStateWithLocation = {
+        ...state.editor,
+        elements: updatedElementsLocation,
+      };
+      const updatedHistoryWithLocation = [
+        ...state.history.history.slice(0, state.history.currentIndex + 1),
+        { ...updatedEditorStateWithLocation },
+      ];
+      const updatedEditorLocation = {
+        ...state,
+        editor: updatedEditorStateWithLocation,
+        history: {
+          ...state.history,
+          history: updatedHistoryWithLocation,
+          currentIndex: updatedHistoryWithLocation.length - 1,
+        },
+      };
+      return updatedEditorLocation;
     default:
       return state;
   }
 };
-export type EditorContextData = {
-  device: DeviceTypes;
-  previewMode: boolean;
-  setPreviewMode: (previewMode: boolean) => void;
-  setDevice: (device: DeviceTypes) => void;
-};
-
-export const EditorContext = createContext<{
-  state: EditorState;
-  dispatch: Dispatch<EditorAction>;
-  subaccountId: string;
-  funnelId: string;
-  pageDetails: FunnelPage | null;
-}>({
-  state: initialState,
-  dispatch: () => undefined,
-  subaccountId: '',
-  funnelId: '',
-  pageDetails: null,
-});
-
-type EditorProps = {
-  children: React.ReactNode;
-  subaccountId: string;
-  funnelId: string;
-  pageDetails: FunnelPage;
-};
-const EditorProvider = (props: EditorProps) => {
-  const [state, dispatch] = useReducer(editorReducer, initialState);
-  return (
-    <EditorContext.Provider
-      value={{
-        state,
-        dispatch,
-        subaccountId: props.subaccountId,
-        funnelId: props.funnelId,
-        pageDetails: props.pageDetails,
-      }}
-    >
-      {props.children}
-    </EditorContext.Provider>
-  );
-};
-export default EditorProvider;
